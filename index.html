@@ -341,7 +341,6 @@ function instaUrl(name){
 
 function renderItem(item){
   const groupHtml = item.g ? `<div class="group-label">${item.g}</div>` : "";
-  const categoryRow = `<div class="detail-row"><b>קטגוריה:</b> <span class="item-cat" style="background:${catColor(item.c)}">${item.c}</span></div>`;
 
   let actions = "";
   if(item.u){
@@ -367,11 +366,11 @@ function renderItem(item){
     <summary class="item-summary">
       <span class="time-chip">${item.t}</span>
       <span class="item-title">${item.n}</span>
+      <span class="item-cat" style="background:${catColor(item.c)}">${item.c}</span>
       ${ICHEVRON}
     </summary>
     <div class="item-detail">
       <p>${item.d}</p>
-      ${categoryRow}
       <div class="detail-row"><b>מחיר:</b> ${item.p}</div>
       <div class="detail-row"><b>שעות פעילות:</b> ${item.h}</div>
       ${boardingRow}
