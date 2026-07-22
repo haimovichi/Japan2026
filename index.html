@@ -113,13 +113,15 @@
   .detail-row b{color:var(--navy);}
   .action-row{display:flex; align-items:center; gap:8px; margin-top:10px; flex-wrap:wrap;}
   .icon-btn{
-    display:inline-flex; align-items:center; gap:5px; background:var(--navy); color:#fff !important;
-    text-decoration:none; padding:7px 12px; border-radius:8px; font-size:12px; font-weight:600;
+    display:inline-flex; align-items:center; justify-content:center; background:var(--navy); color:#fff !important;
+    text-decoration:none; width:32px; height:32px; border-radius:8px; font-size:12px; font-weight:600;
   }
   .icon-btn:hover{background:var(--navy-light);}
-  .icon-btn svg{width:15px; height:15px; flex:0 0 auto;}
+  .icon-btn svg{width:16px; height:16px; flex:0 0 auto;}
   .icon-btn.maps{background:#2c7a4b;}
   .icon-btn.maps:hover{background:#348f59;}
+  .icon-btn.insta{background:#C13584;}
+  .icon-btn.insta:hover{background:#a92c73;}
   .rating-full{display:inline-flex; align-items:center; gap:5px; font-weight:700; color:var(--star);}
   .rating-full svg{width:14px; height:14px;}
   .no-link-note{color:#999; font-size:12.5px; margin-top:6px;}
@@ -164,6 +166,7 @@ const CHEVRON = '<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="cu
 const ICHEVRON = '<svg class="item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>';
 const PIN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.3"/></svg>';
 const GLOBE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z"/></svg>';
+const INSTA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>';
 const STAR = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>';
 
 // ---------------- DATA ----------------
@@ -328,16 +331,22 @@ function mapsUrl(name, loc){
   return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q);
 }
 
+function instaUrl(name){
+  const tag = name.replace(/\s*\(.*?\)\s*/g, "").replace(/[^a-zA-Z0-9]+/g, "").toLowerCase();
+  return "https://www.instagram.com/explore/tags/" + encodeURIComponent(tag) + "/";
+}
+
 function renderItem(item){
   const groupHtml = item.g ? `<div class="group-label">${item.g}</div>` : "";
   const ratingChip = item.rating ? `<span class="rating-chip">${STAR}${item.rating.toFixed(1)}</span>` : "";
 
   let actions = "";
   if(item.u){
-    actions += `<a class="icon-btn" href="${item.u}" target="_blank" rel="noopener" aria-label="אתר רשמי">${GLOBE}<span>אתר</span></a>`;
+    actions += `<a class="icon-btn" href="${item.u}" target="_blank" rel="noopener" aria-label="אתר רשמי">${GLOBE}</a>`;
   }
   if(item.loc){
-    actions += `<a class="icon-btn maps" href="${mapsUrl(item.n, item.loc)}" target="_blank" rel="noopener" aria-label="מפה">${PIN}<span>מפה</span></a>`;
+    actions += `<a class="icon-btn maps" href="${mapsUrl(item.n, item.loc)}" target="_blank" rel="noopener" aria-label="מפה">${PIN}</a>`;
+    actions += `<a class="icon-btn insta" href="${instaUrl(item.n)}" target="_blank" rel="noopener" aria-label="אינסטגרם">${INSTA}</a>`;
   }
   if(item.rating){
     actions += `<span class="rating-full">${STAR}${item.rating.toFixed(1)} <span style="color:var(--gray);font-weight:400;font-size:11.5px">(Google Maps · TripAdvisor)</span></span>`;
