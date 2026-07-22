@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>חיימוביצ'ים ביפן</title>
+<style>
+  :root{
+    --navy:#1F3A5F;
+    --navy-light:#2c4d78;
+    --gold:#B08D57;
+    --choose:#FDF3E0;
+    --choose-border:#e8d2a0;
+    --blue:#EAF1F8;
+    --gray:#666;
+    --bg:#f5f6f8;
+    --card:#ffffff;
+    --line:#e2e5ea;
+    --star:#c8952a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; padding:0;
+    background:var(--bg);
+    font-family:"Segoe UI","Arial Hebrew","Arial",sans-serif;
+    color:#222;
+    direction:rtl;
+  }
+  header{
+    background:linear-gradient(135deg,var(--navy),var(--navy-light));
+    color:#fff;
+    padding:28px 24px 22px;
+    text-align:center;
+  }
+  header h1{margin:0 0 6px; font-size:26px;}
+  header .sub{font-size:15px; opacity:.85;}
+  .wrap{max-width:900px; margin:0 auto; padding:20px 16px 60px;}
+
+  .plan-toggle{
+    display:flex; gap:8px; justify-content:center; margin:18px 0 22px;
+    position:sticky; top:0; z-index:20; background:var(--bg); padding:10px 0;
+  }
+  .plan-toggle button{
+    border:2px solid var(--navy); background:#fff; color:var(--navy);
+    padding:10px 22px; border-radius:999px; font-size:15px; font-weight:600;
+    cursor:pointer; transition:.15s;
+  }
+  .plan-toggle button.active{background:var(--navy); color:#fff;}
+  .plan-toggle button:hover{opacity:.9;}
+
+  .plan-desc{
+    background:var(--card); border:1px solid var(--line); border-radius:10px;
+    padding:14px 16px; margin-bottom:18px; font-size:14px; color:var(--gray); line-height:1.6;
+  }
+
+  details.day{
+    background:var(--card); border:1px solid var(--line); border-radius:12px;
+    margin-bottom:10px; overflow:hidden;
+  }
+  details.day > summary.day-summary{
+    list-style:none; cursor:pointer; padding:14px 16px;
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    user-select:none;
+  }
+  details.day > summary.day-summary::-webkit-details-marker{display:none;}
+  .day-badge{
+    background:var(--navy); color:#fff; font-weight:700; font-size:13px;
+    padding:6px 12px; border-radius:8px; white-space:nowrap;
+  }
+  .day-date{font-size:13px; color:var(--gray); white-space:nowrap; direction:ltr; unicode-bidi:isolate;}
+  .day-region{font-size:16px; font-weight:600; color:var(--navy); flex:1;}
+  .chevron{
+    margin-inline-start:auto; width:22px; height:22px; flex:0 0 auto;
+    transition:transform .2s; color:var(--gold);
+  }
+  details.day[open] > summary .chevron{transform:rotate(180deg);}
+  .day-body{padding:4px 12px 14px;}
+
+  .group-label{
+    font-size:13px; font-weight:700; color:var(--gold); margin:12px 4px 4px;
+    padding-top:8px; border-top:1px dashed var(--line);
+  }
+  .group-label:first-child{border-top:none; margin-top:2px;}
+
+  details.item{
+    background:#fafbfc; border:1px solid var(--line); border-radius:9px;
+    margin:6px 0; overflow:hidden;
+  }
+  details.item > summary.item-summary{
+    list-style:none; cursor:pointer; padding:10px 12px;
+    display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+  }
+  details.item > summary.item-summary::-webkit-details-marker{display:none;}
+  .time-chip{
+    font-size:11px; font-weight:700; color:var(--navy); background:var(--blue);
+    padding:4px 9px; border-radius:6px; white-space:nowrap; direction:ltr; unicode-bidi:isolate;
+  }
+  .item-title{font-size:14.5px; font-weight:600; color:#222; direction:ltr; unicode-bidi:isolate;}
+  .item-cat{
+    font-size:11px; color:var(--gray); background:#eee; padding:3px 8px;
+    border-radius:6px; white-space:nowrap;
+  }
+  .rating-chip{
+    font-size:11px; font-weight:700; color:var(--star); background:#fdf2e0;
+    padding:3px 8px; border-radius:6px; white-space:nowrap; display:inline-flex; align-items:center; gap:3px;
+  }
+  .rating-chip svg{width:11px; height:11px;}
+  .item-chevron{margin-inline-start:auto; width:16px; height:16px; color:#999; transition:transform .2s;}
+  details.item[open] > summary .item-chevron{transform:rotate(180deg);}
+  .item-detail{padding:2px 14px 14px; font-size:13.5px; line-height:1.7;}
+  .item-detail p{margin:4px 0 10px; color:#333;}
+  .detail-row{margin:4px 0;}
+  .detail-row b{color:var(--navy);}
+  .action-row{display:flex; align-items:center; gap:8px; margin-top:10px; flex-wrap:wrap;}
+  .icon-btn{
+    display:inline-flex; align-items:center; gap:5px; background:var(--navy); color:#fff !important;
+    text-decoration:none; padding:7px 12px; border-radius:8px; font-size:12px; font-weight:600;
+  }
+  .icon-btn:hover{background:var(--navy-light);}
+  .icon-btn svg{width:15px; height:15px; flex:0 0 auto;}
+  .icon-btn.maps{background:#2c7a4b;}
+  .icon-btn.maps:hover{background:#348f59;}
+  .rating-full{display:inline-flex; align-items:center; gap:5px; font-weight:700; color:var(--star);}
+  .rating-full svg{width:14px; height:14px;}
+  .no-link-note{color:#999; font-size:12.5px; margin-top:6px;}
+
+  footer{text-align:center; color:var(--gray); font-size:12px; padding:20px; opacity:.7;}
+
+  @media (max-width:520px){
+    header h1{font-size:21px;}
+    .day-region{font-size:14.5px;}
+    .item-title{font-size:13.5px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>חיימוביצ'ים ביפן</h1>
+  <div class="sub">8/9–24/9/2026</div>
+</header>
+
+<div class="wrap">
+  <div class="plan-toggle">
+    <button id="btnA" class="active" onclick="showPlan('A')">תוכנית A — Tokyo ו-Kanto</button>
+    <button id="btnB" onclick="showPlan('B')">תוכנית B — המסלול הזהוב</button>
+  </div>
+
+  <div id="descA" class="plan-desc">
+    14 לילות המבוססים כמעט לחלוטין ב-<b style="direction:ltr;unicode-bidi:isolate">Tokyo</b>, עם טיולי יום ל-Kamakura/Enoshima, לילה אחד ב-Hakone, יום ב-Kawaguchiko/Fuji Five Lakes, יום ב-Nikko, ויום Tokyo DisneySea.
+  </div>
+  <div id="descB" class="plan-desc" style="display:none">
+    אותם 14 לילות אך עם כיסוי גיאוגרפי נרחב יותר — Tokyo, לילה ב-Hakone, Kyoto (כולל לילה מיוחד ב-Arashiyama), טיול יום ל-Nara, ו-Osaka.
+  </div>
+
+  <div id="planA" class="plan-days"></div>
+  <div id="planB" class="plan-days" style="display:none"></div>
+</div>
+
+<footer>המחירים, השעות והדירוגים משוערים — כדאי לאמת סמוך למועד הנסיעה.</footer>
+
+<script>
+const CHEVRON = '<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>';
+const ICHEVRON = '<svg class="item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>';
+const PIN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.3"/></svg>';
+const GLOBE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z"/></svg>';
+const STAR = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>';
+
+// ---------------- DATA ----------------
+
+const PLAN_A = [
+{n:1, date:"ב׳, 8/9", region:"טיסת הלוך: Tel Aviv → Vienna (בדרך ל-Tokyo)", items:[
+  {t:"06:00", n:"OS84 — Tel Aviv (TLV) → Vienna (VIE)", c:"תעופה", d:"טיסת Austrian Airlines, מטוס Airbus A321. המראה מ-Ben Gurion Airport טרמינל 3.", p:"—", h:"המראה 06:00 · נחיתה 08:45", u:"https://www.lufthansa.com/us/en/manage-booking"},
+  {t:"08:45–13:30", n:"עצירה ב-Vienna (VIE)", c:"תעופה", d:"זמן המתנה בטרמינל 3 של Vienna International Airport, כ-4 שעות ו-45 דקות.", p:"—", h:"08:45–13:30", u:null},
+  {t:"13:30", n:"OS25 — Vienna (VIE) → Tokyo Narita (NRT)", c:"תעופה", d:"טיסת Austrian Airlines, מטוס Boeing 777-200. טיסת לילה; נחיתה למחרת בבוקר.", p:"—", h:"המראה 13:30 · נחיתה 08:50 למחרת (9/9)", u:"https://www.lufthansa.com/us/en/manage-booking"},
+]},
+{n:2, date:"ג׳, 9/9", region:"הגעה ל-Tokyo (Narita) ו-Asakusa", items:[
+  {t:"בוקר", n:"נחיתה, מעבר גבולות והעברה למלון", c:"תעופה", d:"מעבר דרכון ומכס ב-Narita Airport, ולאחר מכן העברה למלון ב-Tokyo ברכבת Narita Express או באוטובוס לימוזינה.", p:"נסיעה לעיר כ-3,000-3,600¥", h:"נחיתה כ-08:50", u:"https://www.narita-airport.jp/en/", loc:"Narita"},
+  {t:"אחר הצהריים", n:"מנוחה במלון", c:"חופשי", d:"יום התאקלמות משעון קיץ — מומלץ לא לתכנן יותר מדי ליום הראשון בקרקע.", p:"—", h:"—", u:null},
+  {t:"ערב", n:"Senso-ji (Asakusa)", c:"אתר", d:"המקדש הבודהיסטי העתיק ביותר ב-Tokyo, עם שער Kaminarimon האייקוני ורחוב הקניות Nakamise. מואר יפה בשעות הערב.", p:"כניסה חינם", h:"השטח פתוח 24 שעות; האולם הראשי כ-6:00-17:00", u:"https://www.senso-ji.jp/english/", loc:"Tokyo", rating:4.5},
+]},
+{n:3, date:"ד׳, 10/9", region:"Tokyo — Shibuya ו-Harajuku", items:[
+  {t:"בוקר", n:"Meiji Shrine", c:"אתר", d:"יער עירוני שקט המקיף מקדש שינטו מרכזי, מוקדש לקיסר Meiji ולקיסרית Shoken.", p:"כניסה חינם", h:"כ-5:00-18:30 (משתנה לפי עונה)", u:"https://www.meijijingu.or.jp/en/", loc:"Tokyo", rating:4.6},
+  {t:"אחר הצהריים", n:"Takeshita Street (Harajuku)", c:"קניות", d:"הרחוב הססגוני והצפוף ביותר ב-Tokyo לאופנת רחוב, קרפים וחטיפים.", p:"פריטים כ-300-800¥", h:"רוב החנויות כ-10:00-20:00", u:"https://www.gotokyo.org/en/spot/48/index.html", loc:"Tokyo", rating:4.1},
+  {t:"אחר הצהריים", n:"Shibuya Crossing", c:"אתר", d:"מעבר החציה ההומה בעולם; כדאי לצפות מלמעלה מבית קפה סמוך.", p:"חינם", h:"24 שעות", u:"https://www.gotokyo.org/en/spot/1749/index.html", loc:"Tokyo", rating:4.5},
+  {t:"ערב", n:"Shibuya Sky", c:"תצפית", d:"מצפה פתוח על גג Shibuya Scramble Square עם נוף 360 מעלות, מומלץ לשקיעה. יש להזמין בדיוק 14 יום מראש באתר.", p:"כ-2,500-3,700¥ למבוגר", h:"10:00-22:30 (כניסה אחרונה 21:20)", u:"https://www.shibuya-scramble-square.com/sky/", loc:"Tokyo", rating:4.6},
+]},
+{n:4, date:"ה׳, 11/9", region:"Tokyo — בחרו אפשרות אחת", items:[
+  {t:"בוקר-אחה״צ", n:"teamLab Planets", c:"אמנות", g:"אפשרות א׳ — אמנות דיגיטלית וחוף ים", d:"מוזיאון אמנות דיגיטלית סוחף שבו הולכים יחפים במים ובמרחבי מראה; יש להביא מגבת ובגד החלפה.", p:"כ-3,600¥ למבוגר", h:"9:00-22:00", u:"https://www.teamlab.art/e/planets/", loc:"Tokyo", rating:4.6},
+  {t:"בוקר-אחה״צ", n:"Toyosu Market", c:"אוכל", d:"שוק הדגים הגדול שהחליף את Tsukiji; אזור צפייה במכירה הפומבית של טונה ומסעדות סושי טריות.", p:"ארוחה כ-2,000-4,000¥", h:"כ-5:00-15:00, סגור בימי ראשון וחגים", u:"https://www.gotokyo.org/en/spot/1743/index.html", loc:"Tokyo", rating:3.6},
+  {t:"אחר הצהריים", n:"Odaiba (דרך Yurikamome)", c:"אתר", d:"אי מלאכותי עם טיילת, קניונים ונוף לגשר Rainbow Bridge; הרכבת החד-מסילתית ללא נהג היא חוויה בפני עצמה.", p:"נסיעת Yurikamome כ-330¥ לקטע", h:"24 שעות (הרכבת עד כ-24:00)", u:"https://www.gotokyo.org/en/destinations/southern-tokyo/odaiba/index.html", loc:"Tokyo", rating:4.3},
+  {t:"בוקר", n:"Tsukiji Outer Market", c:"אוכל", g:"אפשרות ב׳ — שוק ומגדל תצפית", d:"שוק האוכל הרחוב התוסס שנשאר לאחר מעבר שוק הסיטונאות ל-Toyosu; דוכני פירות ים, חביתות טמגו ותה.", p:"ארוחה כ-1,000-2,500¥", h:"כ-5:00-14:00, סגור בימי ראשון וחלק מהרביעי", u:"https://www.tsukiji.or.jp/english/", loc:"Tokyo", rating:4.3},
+  {t:"אחר הצהריים", n:"Tokyo Skytree", c:"תצפית", d:"צריח השידור הגבוה ביותר ב-Japan (634 מ׳) עם שתי קומות תצפית.", p:"Tembo Deck כ-1,800-2,400¥, שילוב עם Tembo Galleria כ-3,000-3,500¥", h:"10:00-21:00", u:"https://en.tokyo-skytree.jp/", loc:"Tokyo", rating:4.4},
+]},
+{n:5, date:"ו׳, 12/9", region:"Kamakura ו-Enoshima", items:[
+  {t:"בוקר", n:"Kotoku-in (Great Buddha)", c:"אתר", d:"פסל בודהה ענק מהמאה ה-13 היושב בחוץ תחת כיפת שמיים, לאחר שהמבנה המקורי נהרס בצונאמי.", p:"כ-300¥", h:"8:00-17:30 (עד 17:00 באוקטובר-מרץ)", u:"https://www.kotoku-in.jp/en/", loc:"Kamakura", rating:4.4},
+  {t:"בוקר", n:"Hase-dera", c:"אתר", d:"מקדש עם פסל קאנון עץ ענק, גנים מדורגים ומרפסת נוף למפרץ Sagami.", p:"כ-400¥", h:"8:00-17:00", u:"https://www.hasedera.jp/en/", loc:"Kamakura", rating:4.5},
+  {t:"אחר הצהריים", n:"Enoshima", c:"אתר", d:"אי-חוף עם מקדשים, מערות ים ומגדל תצפית; מגיעים ברכבת Enoden הציורית.", p:"כניסה לאי חינם, אטרקציות כ-200-500¥", h:"משתנה לפי אתר", u:"https://discover-fujisawa.jp/en/", loc:"Enoshima", rating:4.3},
+  {t:"ערב", n:"ארוחת פירות ים ב-Kamakura/Enoshima", c:"מסעדה", d:"מנות פירות ים טריים, כולל shirasu (דגיגי חוף) האופייניים לאזור.", p:"כ-2,000-4,000¥ לאדם", h:"משתנה", u:null},
+]},
+{n:6, date:"ש׳, 13/9", region:"Hakone — לילה מיוחד", items:[
+  {t:"בוקר", n:"Odakyu Romancecar", c:"תחבורה", d:"רכבת אקספרס נוחה מ-Shinjuku ל-Hakone-Yumoto (כ-85 דקות). כדאי לרכוש גם Hakone Free Pass המכסה 8 אמצעי תחבורה מקומיים.", p:"רכבת כ-2,470¥ כיוון אחד; Free Pass כ-6,100¥ ל-2 ימים", h:"יציאות תכופות", u:"https://www.odakyu.jp/english/support/official_reservation/"},
+  {t:"אחר הצהריים", n:"Hakone Open-Air Museum", c:"אתר", d:"פארק פסלים ואמנות מודרנית בחוץ, כולל אגף מוקדש ל-Picasso.", p:"כ-1,600¥ למבוגר", h:"9:00-17:00", u:"https://www.hakone-oam.or.jp/en/", loc:"Hakone", rating:4.6},
+  {t:"ערב", n:"לילה בריוקאן (Gora Kadan / Hakone Kowakien Tenyu)", c:"מלון", d:"אמבט אונסן פרטי/נופי וארוחת קייסקי מרובת מנות — הלילה המיוחד של התוכנית.", p:"כ-$300-800+ ללילה", h:"צ'ק-אין כ-15:00", u:"https://www.gorakadan.com/hakone/?lang=en", loc:"Hakone", rating:4.2},
+]},
+{n:7, date:"א׳, 14/9", region:"Hakone — לולאת האגם וההר", items:[
+  {t:"בוקר", n:"Hakone Tozan Train + רכבל ל-Sounzan", c:"תחבורה", d:"הרכבת ההררית התלולה ביותר ב-Japan, ולאחריה רכבל תלוי לפסגת Sounzan.", p:"כלול ב-Hakone Free Pass", h:"כ-9:00-17:00", u:"https://www.hakonenavi.jp/international/en/transportation/hakone-tozan"},
+  {t:"אחר הצהריים", n:"Owakudani", c:"אתר", d:"עמק געשי פעיל עם נביעות גופרית; מפורסם בביצי \"קורו-טמאגו\" השחורות המבושלות במעיינות החמים.", p:"ביצה שחורה כ-500¥ לחמישייה", h:"הרכבל תלוי במזג האוויר", u:"https://www.hakoneropeway.co.jp/foreign/en/", loc:"Hakone", rating:4.3},
+  {t:"אחר הצהריים", n:"Lake Ashi", c:"שיט", d:"שיט בסירת שודדים תיירותית על אגם געשי, עם נוף להר Fuji בימים בהירים.", p:"כ-1,000¥ (חלקית כלול ב-Free Pass)", h:"יציאות כל 30-60 דקות", u:"https://www.hakone-kankosen.co.jp/foreign/en/", loc:"Hakone", rating:4.1},
+]},
+{n:8, date:"ב׳, 15/9", region:"Fuji Five Lakes / Kawaguchiko", items:[
+  {t:"בוקר", n:"JR Fuji Excursion / אוטובוס ל-Kawaguchiko", c:"תחבורה", d:"רכבת אקספרס ישירה או אוטובוס בין-עירוני מ-Tokyo/Shinjuku.", p:"רכבת כ-4,130¥, אוטובוס כ-2,100¥", h:"כשעתיים נסיעה", u:"https://www.jreast.co.jp/en/multi/fuji/about.html"},
+  {t:"בוקר", n:"Chureito Pagoda", c:"אתר", d:"נקודת הצילום האייקונית ביותר של הר Fuji — פגודה אדומה בת חמש קומות מול ההר. דורש טיפוס של כ-15-20 דקות במדרגות.", p:"כניסה חינם", h:"הפארק פתוח כל היום", u:"https://www.japan.travel/en/spot/1334/", loc:"Fujiyoshida", rating:4.7},
+  {t:"אחר הצהריים", n:"Fuji-Q Highland", c:"פארק", g:"בחרו אחת מהאפשרויות הבאות לאחר הצהריים", d:"פארק רכבות הרים קיצוני עם נוף להר Fuji; Fujiyama ו-Takabisha בין הקיצוניות בעולם.", p:"כרטיס יום כ-6,500-8,500¥", h:"כ-9:00-18:00 (משתנה)", u:"https://www.fujiq.jp/en/index.html", loc:"Fujiyoshida", rating:4.1},
+  {t:"אחר הצהריים", n:"טיול אגם רגוע + hoto", c:"מסעדה", d:"ארוחת אטריות עבות בסיר חם (hoto) ואמבט רגליים באונסן לצד האגם — חלופה רגועה יותר ל-Fuji-Q Highland.", p:"ארוחה כ-1,200¥", h:"משתנה", u:null},
+]},
+{n:9, date:"ג׳, 16/9", region:"Nikko", items:[
+  {t:"בוקר", n:"Toshogu Shrine", c:"אתר", d:"מכלול מקדשים מוזהב ומעוטר להפליא, קבר השוגון Tokugawa Ieyasu; אתר מורשת עולמית של אונסק\"ו. מפורסם בפיסול \"שלושת הקופים החכמים\".", p:"כ-1,300¥", h:"8:00-17:00 (עד 16:00 בנוב-מרץ)", u:"https://www.japan.travel/en/spot/1482/", loc:"Nikko", rating:4.4},
+  {t:"אחר הצהריים", n:"Kegon Falls", c:"אתר", d:"מפל מים בגובה 97 מ׳ עם מעלית תצפית לבסיס המפל.", p:"מעלית כ-570¥", h:"8:00-17:00 (משתנה בעונה)", u:"https://www.visitnikko.jp/en/spots/kegon-falls/", loc:"Nikko", rating:4.2},
+  {t:"אחר הצהריים", n:"Lake Chuzenji", c:"אתר", d:"אגם געשי בגובה רם, מוקף ביערות ותצפיות; טיול קצר לאורך החוף.", p:"חינם", h:"כל היום", u:"https://www.visitnikko.jp/en/spots/lake-chuzenji/", loc:"Nikko", rating:4.3},
+]},
+{n:10, date:"ד׳, 17/9", region:"Tokyo DisneySea", items:[
+  {t:"בוקר-ערב", n:"Tokyo DisneySea", c:"פארק", d:"הפארק הימי/מיתולוגי הייחודי בעולם, ללא מקבילה ב-Orlando; כולל את אזור Fantasy Springs החדש (Frozen/Tangled/Peter Pan).", p:"מבוגר כ-7,900-10,900¥ (תמחור דינמי)", h:"בדרך כלל 9:00-21:00", u:"https://www.tokyodisneyresort.jp/en/tds.html", loc:"Tokyo", rating:4.8},
+]},
+{n:11, date:"ה׳, 18/9", region:"Tokyo — Ueno, Yanaka, Akihabara", items:[
+  {t:"בוקר", n:"Ueno Park + Tokyo National Museum", c:"מוזיאון", d:"הפארק הגדול והמוכר ב-Tokyo, ובו האוסף הגדול ביותר בעולם לאמנות יפנית.", p:"פארק חינם, מוזיאון כ-1,000¥", h:"מוזיאון 9:30-17:00, סגור בימי שני", u:"https://www.tnm.jp/?lang=en", loc:"Tokyo", rating:4.4},
+  {t:"אחר הצהריים", n:"Yanaka Ginza", c:"קניות", d:"רחוב קניות ישן ואותנטי ששרד את מלחמת העולם השנייה, עם חנויות משפחתיות וחתולים משוטטים.", p:"פריטים כ-100-500¥", h:"רוב החנויות כ-10:00-19:00", u:"https://yanaka-ginza.com/", loc:"Tokyo", rating:4.1},
+  {t:"ערב", n:"Akihabara", c:"בילוי", d:"רובע האנימה, המשחקים והאלקטרוניקה של Tokyo; ארקייДים, מכונות גאצ׳ה וחנויות רטרו.", p:"כניסה חינם, גאצ׳ה כ-100-500¥", h:"רוב החנויות עד כ-20:00-22:00", u:"https://www.gotokyo.org/en/destinations/central-tokyo/akihabara/index.html", loc:"Tokyo", rating:4.3},
+]},
+{n:12, date:"ו׳, 19/9", region:"Tokyo — Ghibli ו-Shinjuku", items:[
+  {t:"בוקר", n:"Ghibli Museum", c:"מוזיאון", d:"מוזיאון קסום שעיצב Hayao Miyazaki בעצמו, עם סטים מקוריים מסרטי Studio Ghibli; אין צילומים בפנים. כרטיסים לחודש נתון משתחררים ב-10 לחודש הקודם בשעה 10:00 JST ואוזלים מהר.", p:"כ-1,000¥ למבוגר", h:"כניסה בזמן קבוע: 10:00 / 12:00 / 14:00 / 16:00", u:"https://www.ghibli-museum.jp/en/", loc:"Mitaka, Tokyo", rating:4.6},
+  {t:"אחר הצהריים", n:"Shinjuku Gyoen (חלופה אם Ghibli לא הוזמן בזמן)", c:"אתר", d:"אחד הגנים היפים ב-Tokyo, המשלב סגנון יפני, צרפתי ואנגלי.", p:"כ-500¥", h:"9:00-18:00, סגור בימי שני", u:"https://www.env.go.jp/garden/shinjukugyoen/english/index.html", loc:"Tokyo", rating:4.6},
+  {t:"אחר הצהריים", n:"Golden Gai", c:"בילוי", d:"רשת סמטאות צרות עם עשרות בארים זעירים בני 2-6 מקומות כל אחד.", p:"כניסה חינם, בארים גובים לעיתים דמי כניסה", h:"פעיל בעיקר בערב", u:"https://www.gotokyo.org/en/spot/62/index.html", loc:"Tokyo", rating:4.0},
+  {t:"ערב", n:"Omoide Yokocho", c:"מסעדה", d:"סמטת יאקיטורי ואיזקאיה נוסטלגית מתקופת אחרי המלחמה.", p:"כ-2,500-4,000¥ לאדם", h:"רוב הדוכנים נפתחים כ-17:00", u:"https://en.shinjuku-omoide.com/", loc:"Tokyo", rating:4.1},
+]},
+{n:13, date:"ש׳, 20/9", region:"Tokyo — יום גמיש / רזרבה", items:[
+  {t:"כל היום", n:"יום רזרבה למזג אוויר", c:"חופשי", d:"נשמר בכוונה כגיבוי לטייפונים/גשם (ספטמבר הוא החודש הגשום ביותר ב-Japan). אם השמיים בהירים — חזרה לאתר אהוב, טיילת Odaiba, או קניות ב-Ginza.", p:"—", h:"—", u:null},
+]},
+{n:14, date:"א׳, 21/9", region:"Kanto — בחרו אפשרות אחת", items:[
+  {t:"כל היום", n:"Hakone — יום שני / אונסן", c:"אתר", g:"אפשרות א׳", d:"חזרה ל-Hakone להשלמת הלולאה או אתרים שלא נכללו קודם, או פשוט יום הרפיה באונסן.", p:"—", h:"—", u:"https://www.hakonenavi.jp/international/en/", loc:"Hakone"},
+  {t:"כל היום", n:"Yokohama Chinatown", c:"אתר", g:"אפשרות ב׳", d:"הרובע הסיני הגדול ביותר ב-Japan, עשרות מסעדות דים-סאם ומאפייה סיניים.", p:"ארוחה כ-1,500-3,000¥", h:"רוב המסעדות 11:00-22:00", u:"https://www.japan.travel/en/spot/1600/", loc:"Yokohama", rating:4.1},
+  {t:"כל היום", n:"Cup Noodles Museum", c:"מוזיאון", d:"מוזיאון אינטראקטיבי של Nissin שבו אפשר לעצב כוס אטריות אישית.", p:"כניסה חינם, כוס בעיצוב אישי כ-500¥", h:"10:00-18:00, סגור בימי שני", u:"https://www.cupnoodles-museum.jp/en/yokohama/", loc:"Yokohama", rating:4.2},
+  {t:"כל היום", n:"המשך יום 4 שלא נבחר", c:"אתר", g:"אפשרות ג׳", d:"ביצוע המחצית של teamLab/Odaiba או Tsukiji/Skytree שדולגה ביום 4, בקצב רגוע יותר.", p:"—", h:"—", u:null},
+]},
+{n:15, date:"ב׳, 22/9", region:"Tokyo — קניות אחרונות", items:[
+  {t:"בוקר-אחה״צ", n:"Ginza", c:"קניות", d:"רובע הקניות היוקרתי ביותר ב-Tokyo, כלבואים וקומות מזון \"דפצ'יקה\" תת-קרקעיות.", p:"משתנה מאוד", h:"רוב החנויות 10:00/11:00-20:00/21:00", u:"https://www.gotokyo.org/en/destinations/central-tokyo/ginza/index.html", loc:"Tokyo", rating:4.3},
+  {t:"ערב", n:"ארוחת ערב אחרונה מיוחדת", c:"מסעדה", d:"סושי אומקסה או וואגיו/יאקיניקו — יש להזמין מראש, לעיתים שבועות מראש.", p:"כ-15,000-60,000¥ לאדם", h:"משתנה", u:null},
+]},
+{n:16, date:"ג׳, 23/9", region:"טיסת חזור: Tokyo → Vienna", items:[
+  {t:"בוקר", n:"העברה ל-Narita Airport", c:"תעופה", d:"יש להשאיר כ-3 שעות לפני ההמראה.", p:"—", h:"—", u:"https://www.narita-airport.jp/en/", loc:"Narita"},
+  {t:"11:10", n:"OS26 — Tokyo Narita (NRT) → Vienna (VIE)", c:"תעופה", d:"טיסת Austrian Airlines, מטוס Boeing 777-200.", p:"—", h:"המראה 11:10 · נחיתה 18:20", u:"https://www.lufthansa.com/us/en/manage-booking"},
+  {t:"18:20–20:20", n:"עצירה ב-Vienna (VIE)", c:"תעופה", d:"זמן המתנה בטרמינל 3 של Vienna International Airport, כ-2 שעות.", p:"—", h:"18:20–20:20", u:null},
+  {t:"20:20", n:"OS83 — Vienna (VIE) → Tel Aviv (TLV)", c:"תעופה", d:"טיסת Austrian Airlines, מטוס Airbus A321. טיסת לילה; נחיתה למחרת לפנות בוקר.", p:"—", h:"המראה 20:20 · נחיתה 00:45 למחרת (24/9)", u:"https://www.lufthansa.com/us/en/manage-booking"},
+]},
+{n:17, date:"ד׳, 24/9", region:"נחיתה ב-Tel Aviv — סיום הטיול", items:[
+  {t:"00:45", n:"נחיתה ב-Tel Aviv (TLV)", c:"תעופה", d:"נחיתה ב-Ben Gurion Airport טרמינל 3, מעבר דרכון וקבלת מזוודות. סיום הטיול.", p:"—", h:"נחיתה 00:45", u:null},
+]},
+];
+
+const PLAN_B = [
+{n:1, date:"ב׳, 8/9", region:"טיסת הלוך: Tel Aviv → Vienna (בדרך ל-Tokyo)", items: PLAN_A[0].items},
+{n:2, date:"ג׳, 9/9", region:"הגעה ל-Tokyo (Narita) ו-Asakusa", items: PLAN_A[1].items},
+{n:3, date:"ד׳, 10/9", region:"Tokyo — Shibuya ו-Harajuku", items: PLAN_A[2].items},
+{n:4, date:"ה׳, 11/9", region:"Tokyo — בחרו אפשרות אחת", items: PLAN_A[3].items},
+{n:5, date:"ו׳, 12/9", region:"Kamakura ו-Enoshima", items: PLAN_A[4].items},
+{n:6, date:"ש׳, 13/9", region:"Tokyo DisneySea", items: PLAN_A[9].items},
+{n:7, date:"א׳, 14/9", region:"Hakone — לילה מיוחד מס׳ 1", items: PLAN_A[5].items},
+{n:8, date:"ב׳, 15/9", region:"Hakone → Kyoto (מעבר)", items:[
+  {t:"בוקר", n:"Hakone Tozan Train + רכבל ל-Sounzan", c:"תחבורה", d:"הרכבת ההררית התלולה ביותר ב-Japan, ולאחריה רכבל תלוי לפסגת Sounzan.", p:"כלול ב-Hakone Free Pass", h:"כ-9:00-17:00", u:"https://www.hakonenavi.jp/international/en/transportation/hakone-tozan"},
+  {t:"בוקר", n:"Owakudani + Lake Ashi", c:"אתר", d:"עמק געשי עם ביצי אונסן שחורות, ולאחריו שיט על אגם Ashi בנוף להר Fuji (בימים בהירים).", p:"ביצה שחורה כ-500¥ לחמישייה; שיט כ-1,000¥", h:"תלוי במזג האוויר", u:"https://www.hakoneropeway.co.jp/foreign/en/", loc:"Hakone", rating:4.2},
+  {t:"אחר הצהריים", n:"שילוח מזוודות (takkyubin)", c:"תחבורה", d:"מומלץ לשלוח מזוודות גדולות מראש למלון ב-Kyoto (מגיע למחרת) כדי לא לסחוב אותן בשינקנסן.", p:"כ-2,000-3,000¥ למזוודה", h:"—", u:"https://www.kuronekoyamato.co.jp/ytc/en/send/services/takkyubin/"},
+  {t:"ערב", n:"שינקנסן מ-Odawara ל-Kyoto", c:"תחבורה", d:"רכבת ישירה מתחנת Odawara (על קו השינקנסן) ל-Kyoto, ללא צורך לחזור דרך Tokyo. צ'ק-אין במלון בהגעה.", p:"—", h:"כשעתיים נסיעה", u:"https://global.jr-central.co.jp/en/"},
+]},
+{n:9, date:"ג׳, 16/9", region:"Kyoto — Fushimi Inari ו-Gion", items:[
+  {t:"בוקר", n:"Fushimi Inari Taisha", c:"אתר", d:"אלפי שערי טוריאי כתומים מטפסים בהר; הכי טוב לפני 8:00. מסלול מלא לפסגה וחזרה כ-2.5-3 שעות הליכה.", p:"כניסה חינם", h:"פתוח 24 שעות", u:"https://inari.jp/en/", loc:"Kyoto", rating:4.6},
+  {t:"אחר הצהריים", n:"Nishiki Market", c:"אוכל", d:"\"המטבח של Kyoto\" — כ-400 מ׳ של דוכני אוכל מסורתיים (אונאגי, טמגויאקי, מוצי מאצ׳ה).", p:"פריט כ-200-800¥", h:"רוב הדוכנים 9:00-18:00, חלקם סגורים בימי רביעי/ראשון", u:"https://www.kyoto-nishiki.or.jp/en/", loc:"Kyoto", rating:4.2},
+  {t:"ערב", n:"Gion", c:"אתר", d:"הרובע ההיסטורי של הגיישות והמאיקו, בתי עץ מסורתיים ותה בתים. סיכוי לצפות בגיישה סביב 18:00-19:00 — יש לשמור על כבוד ולא לצלם בפלאש.", p:"חינם", h:"פעיל בעיקר בערב", u:"https://www.japan.travel/en/spot/84/", loc:"Kyoto", rating:4.3},
+]},
+{n:10, date:"ד׳, 17/9", region:"Arashiyama — לילה מיוחד מס׳ 2", items:[
+  {t:"בוקר", n:"Arashiyama Bamboo Grove", c:"אתר", d:"שביל הליכה קסום בין במבוקים ענקיים; הכי שקט לפני 8:00.", p:"חינם", h:"24 שעות", u:"https://www.japan.travel/en/spot/1141/", loc:"Kyoto", rating:4.0},
+  {t:"בוקר", n:"Tenryu-ji", c:"אתר", d:"מקדש זן מהמאה ה-14 עם גן נוף מהמפורסמים ב-Japan, אתר מורשת עולמית.", p:"כ-500¥ (גן), כ-800¥ (כולל היכל)", h:"כ-8:30-17:30 (קיץ)", u:"https://www.tenryuji.com/en/", loc:"Kyoto", rating:4.4},
+  {t:"אחר הצהריים", n:"Iwatayama Monkey Park", c:"חיות", d:"טיפוס קצר להר שבראשו קופי מקוק פראיים ונוף פנורמי ל-Kyoto.", p:"כ-550-600¥ למבוגר", h:"9:00-16:00/17:00", u:"http://www.monkeypark.jp/eng-index.html", loc:"Kyoto", rating:4.5},
+  {t:"ערב", n:"לילה בריוקאן (Suiran / Togetsutei)", c:"מלון", d:"ריוקאן על גדות נהר Katsura, אפשרות אונסן פרטי וארוחת קייסקי (ב-Suiran: מיזוג יפני-צרפתי) — הלילה המיוחד השני של התוכנית.", p:"כ-$400-900 ללילה", h:"צ'ק-אין כ-15:00", u:"https://www.marriott.com/en-us/hotels/ukylc-suiran-a-luxury-collection-hotel-kyoto/overview/", loc:"Arashiyama, Kyoto", rating:4.2},
+]},
+{n:11, date:"ה׳, 18/9", region:"Kyoto — בחרו אפשרות אחת", items:[
+  {t:"בוקר", n:"Kinkaku-ji", c:"אתר", g:"אפשרות א׳ — אתרים קלאסיים", d:"פביליון הזהב — מבנה מוזהב המשתקף באגם, אחד הסמלים המצולמים ביותר של Japan.", p:"כ-500¥", h:"9:00-17:00", u:"https://www.shokoku-ji.jp/en/kinkakuji/", loc:"Kyoto", rating:4.5},
+  {t:"אחר הצהריים", n:"Nijo Castle", c:"אתר", d:"טירת שוגון מהמאה ה-17 עם \"רצפות הזמיר\" המפורסמות שחורקות כאמצעי אבטחה.", p:"כ-1,300¥", h:"כניסה 8:45-16:00", u:"https://nijo-jocastle.city.kyoto.lg.jp/?lang=en", loc:"Kyoto", rating:4.3},
+  {t:"בוקר-אחה״צ", n:"Kurama-dera + Kifune Shrine (טרק)", c:"טרק", g:"אפשרות ב׳ — טרק ביער (מומלץ לחובבי טיולים)", d:"מסלול הליכה של כ-3.9-5 ק\"מ, 2-3 שעות: מקדש ההר Kurama-dera, ירידה דרך היער לכפר Kifune Shrine. במות אוכל על הנהר בקיץ/סתיו מוקדם.", p:"כניסה ל-Kurama-dera כ-500¥", h:"שעות אור יום", u:"https://www.japan.travel/en/spot/1116/", loc:"Kyoto", rating:4.5},
+  {t:"בוקר", n:"Kiyomizu-dera + Gion (סבב שני)", c:"אתר", g:"אפשרות ג׳ — אם ה-Gion של יום 9 הרגיש ממהר", d:"מקדש עץ על מצוק עם נוף פתוח לעיר; מזומן בלבד. אחריו טיול ערב רגוע יותר ב-Gion.", p:"כ-400-500¥", h:"כ-6:00-18:00", u:"https://www.kiyomizudera.or.jp/en/", loc:"Kyoto", rating:4.4},
+]},
+{n:12, date:"ו׳, 19/9", region:"Nara — טיול יום", items:[
+  {t:"בוקר", n:"Nara Park", c:"חיות", d:"כ-1,200 צבאים מקודשים משוטטים חופשי בפארק; ניתן להאכיל ב\"שיקה סנבּיי\".", p:"כניסה לפארק חינם, קרקרים כ-200¥", h:"24 שעות", u:"https://www.visitnara.jp/destinations/area/nara-park/", loc:"Nara", rating:4.5},
+  {t:"אחר הצהריים", n:"Todai-ji", c:"אתר", d:"אחד המבנים העצומים בעולם העשויים עץ, ובתוכו פסל הבודהה הגדול בעולם מברונזה.", p:"כ-800¥", h:"7:30-17:30 (קיץ)", u:"https://www.todaiji.or.jp/en/", loc:"Nara", rating:4.7},
+  {t:"אחר הצהריים", n:"Kasuga Taisha", c:"אתר", d:"מקדש שינטו עם אלפי פנסי אבן ונחושת לאורך שבילים מוצלים.", p:"היכל פנימי כ-700¥", h:"6:30-17:30", u:"https://www.kasugataisha.or.jp/en/about_en/", loc:"Nara", rating:4.4},
+]},
+{n:13, date:"ש׳, 20/9", region:"Osaka — הגעה", items:[
+  {t:"בוקר", n:"Osaka Castle", c:"אתר", d:"טירה משוחזרת עם מגדל תצפית ומוזיאון, מוקפת גן וחפיר.", p:"כ-1,200¥ למבוגר", h:"9:00-17:00", u:"https://osakacastle.org/", loc:"Osaka", rating:4.3},
+  {t:"אחר הצהריים", n:"Kuromon Ichiba Market", c:"אוכל", d:"\"המטבח של Osaka\" — פירות ים טריים, שיפודי וואגיו וסרטני שלג.", p:"פריט כ-300-1,500¥", h:"רוב הדוכנים 9:00-18:00", u:"https://kuromon.com/en/", loc:"Osaka", rating:4.1},
+  {t:"ערב", n:"Dotonbori", c:"אוכל", d:"התעלה הססגונית עם שלטי הניאון האייקוניים; טאקויאקי, אוקונומיאקי וקושיקצו.", p:"פריט כ-300-1,500¥", h:"פעיל עד מאוחר", u:"https://osaka-info.jp/en/spot/dotonbori/", loc:"Osaka", rating:4.3},
+]},
+{n:14, date:"א׳, 21/9", region:"Osaka — בחרו אפשרות אחת", items:[
+  {t:"כל היום", n:"Universal Studios Japan / Super Nintendo World", c:"פארק", g:"אפשרות א׳ — רק אם עדיין רוצים יום פארק שני", d:"לתשומת לב: Super Nintendo World חופף כיום במידה רבה לגרסה של Epic Universe ב-Orlando (2025), כולל רכבת Mario Kart ואזור Donkey Kong Country.", p:"Studio Pass משתנה לפי תאריך", h:"בד\"כ 9:00-20:00/21:00", u:"https://www.usj.co.jp/e/main/main.html", loc:"Osaka", rating:4.1},
+  {t:"בוקר-אחה״צ", n:"Umeda Sky Building", c:"תצפית", g:"אפשרות ב׳ — החלופה המומלצת", d:"מגדל תאומים עם \"גן צף\" מעגלי בקומת הגג — יום רגוע יותר אחרי מקטע אינטנסיבי ב-Kansai.", p:"כ-1,300-2,000¥", h:"9:30-22:30", u:"https://www.skybldg.co.jp/en/", loc:"Osaka", rating:4.2},
+  {t:"אחר הצהריים", n:"Shitenno-ji", c:"אתר", d:"אחד המקדשים הבודהיסטיים הרשמיים העתיקים ביותר ב-Japan (נוסד 593).", p:"כ-300¥ (מתחם מרכזי)", h:"8:30-16:30", u:"https://www.shitennoji.or.jp/", loc:"Osaka", rating:4.0},
+]},
+{n:15, date:"ב׳, 22/9", region:"Osaka → Tokyo/Narita (מעבר)", items:[
+  {t:"בוקר", n:"שינקנסן Osaka → Tokyo", c:"תחבורה", d:"נסיעה של כ-2.5-3 שעות; כדאי לשקול לינה ליד Narita כדי להקל על ההמראה המוקדמת למחרת.", p:"כ-14,000-14,720¥", h:"יציאות תכופות", u:"https://global.jr-central.co.jp/en/"},
+  {t:"ערב", n:"לינה ליד Narita Airport", c:"מלון", d:"מפשט את הלוגיסטיקה של ההמראה המוקדמת ביום האחרון.", p:"כ-$100-180", h:"—", u:"https://www.narita-airport.jp/en/", loc:"Narita"},
+]},
+{n:16, date:"ג׳, 23/9", region:"טיסת חזור: Tokyo → Vienna", items: PLAN_A[15].items},
+{n:17, date:"ד׳, 24/9", region:"נחיתה ב-Tel Aviv — סיום הטיול", items: PLAN_A[16].items},
+];
+
+
+// ---------------- RENDER ----------------
+
+function catColor(c){
+  return {
+    "תעופה":"#ddebff","תחבורה":"#e7e0ff","אתר":"#e3f3e6","מסעדה":"#ffe9e0",
+    "מלון":"#fff3d6","פארק":"#ffe0ef","טרק":"#e0f7f0","קניות":"#f0e6ff",
+    "מוזיאון":"#e0f0ff","תצפית":"#e0f7ff","בילוי":"#f5e6ff","שיט":"#e0f0ff",
+    "חיות":"#eaffe0","אמנות":"#ffe6f0","חופשי":"#f0f0f0"
+  }[c] || "#eee";
+}
+
+function mapsUrl(name, loc){
+  const q = name.replace(/\s*\(.*?\)\s*/g, " ") + (loc ? ", " + loc : "") + ", Japan";
+  return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q);
+}
+
+function renderItem(item){
+  const groupHtml = item.g ? `<div class="group-label">${item.g}</div>` : "";
+  const ratingChip = item.rating ? `<span class="rating-chip">${STAR}${item.rating.toFixed(1)}</span>` : "";
+
+  let actions = "";
+  if(item.u){
+    actions += `<a class="icon-btn" href="${item.u}" target="_blank" rel="noopener" aria-label="אתר רשמי">${GLOBE}<span>אתר</span></a>`;
+  }
+  if(item.loc){
+    actions += `<a class="icon-btn maps" href="${mapsUrl(item.n, item.loc)}" target="_blank" rel="noopener" aria-label="מפה">${PIN}<span>מפה</span></a>`;
+  }
+  if(item.rating){
+    actions += `<span class="rating-full">${STAR}${item.rating.toFixed(1)} <span style="color:var(--gray);font-weight:400;font-size:11.5px">(Google Maps · TripAdvisor)</span></span>`;
+  }
+  const actionsHtml = actions ? `<div class="action-row">${actions}</div>` : (!item.u ? `<div class="no-link-note">אין קישור חיצוני לפריט זה</div>` : "");
+
+  return `${groupHtml}
+  <details class="item">
+    <summary class="item-summary">
+      <span class="time-chip">${item.t}</span>
+      <span class="item-title">${item.n}</span>
+      <span class="item-cat" style="background:${catColor(item.c)}">${item.c}</span>
+      ${ratingChip}
+      ${ICHEVRON}
+    </summary>
+    <div class="item-detail">
+      <p>${item.d}</p>
+      <div class="detail-row"><b>מחיר:</b> ${item.p}</div>
+      <div class="detail-row"><b>שעות פעילות:</b> ${item.h}</div>
+      ${actionsHtml}
+    </div>
+  </details>`;
+}
+
+function renderDay(day){
+  const itemsHtml = day.items.map(renderItem).join("");
+  return `
+  <details class="day">
+    <summary class="day-summary">
+      <span class="day-badge">יום ${day.n}</span>
+      <span class="day-date">${day.date}</span>
+      <span class="day-region">${day.region}</span>
+      ${CHEVRON}
+    </summary>
+    <div class="day-body">${itemsHtml}</div>
+  </details>`;
+}
+
+function renderPlan(containerId, days){
+  document.getElementById(containerId).innerHTML = days.map(renderDay).join("");
+}
+
+renderPlan("planA", PLAN_A);
+renderPlan("planB", PLAN_B);
+
+function showPlan(which){
+  document.getElementById("planA").style.display = which === "A" ? "block" : "none";
+  document.getElementById("planB").style.display = which === "B" ? "block" : "none";
+  document.getElementById("descA").style.display = which === "A" ? "block" : "none";
+  document.getElementById("descB").style.display = which === "B" ? "block" : "none";
+  document.getElementById("btnA").classList.toggle("active", which === "A");
+  document.getElementById("btnB").classList.toggle("active", which === "B");
+}
+</script>
+</body>
+</html>
