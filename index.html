@@ -352,7 +352,7 @@ function renderItem(item){
     actions += `<a class="icon-btn insta" href="${instaUrl(item.n)}" target="_blank" rel="noopener" aria-label="אינסטגרם">${INSTA}</a>`;
   }
   if(item.track){
-    actions += `<a class="icon-btn track" href="${item.track}" target="_blank" rel="noopener" aria-label="מעקב טיסה חי">${PLANE}</a>`;
+    actions += `<a class="icon-btn track" href="${item.track}" target="_blank" rel="noopener" aria-label="סטטוס טיסה (זמנים והשהיות, ללא שער עלייה)">${PLANE}</a>`;
   }
   if(item.rating){
     actions += `<span class="rating-full">${STAR}${item.rating.toFixed(1)} <span style="color:var(--gray);font-weight:400;font-size:11.5px">(Google Maps · TripAdvisor)</span></span>`;
